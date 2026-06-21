@@ -101,3 +101,65 @@ export async function updateProfile(formData: FormData) {
   revalidatePath("/");
   redirect(`/u/${parsed.data.username}`);
 }
+
+export async function toggleLike(formData: FormData) {
+  "use server";
+
+  const postId = String(formData.get("post_id") || "");
+  if (!postId) return;
+
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect("/login");
+  }
+
+  const { data: existing } = await supabase
+    .from("post_likes")
+    .select("id")
+    .eq("post_id", postId)
+    .eq("user_id", user.id)
+    .maybeSingle();
+
+  if (existing) {
+    await supabase.from("post_likes").delete().eq("id", existing.id);
+  } else {
+    await supabase.from("post_likes").insert({
+      post_id: postId,
+      user_id: user.id,
+    });
+  }
+
+  revalidatePath("/");
+  revalidatePath(`/p/${postId}`);
+}
+
+export async function addComment(formData: FormData) {
+  "use server";
+
+  const postId = String(formData.get("post_id") || "");
+  const body = String(formData.get("body") || "").trim();
+
+  if (!postId || !body) return;
+
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect("/login");
+  }
+
+  await supabase.from("comments").insert({
+    post_id: postId,
+    user_id: user.id,
+    body,
+  });
+
+  revalidatePath("/");
+  revalidatePath(`/p/${postId}`);
+}

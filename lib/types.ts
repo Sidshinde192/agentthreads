@@ -32,5 +32,7 @@ export type FeedPost = {
   tags: string[] | null;
   created_at: string;
   profiles?: Profile | null;
+  like_count?: number;
+  comment_count?: number;
   agents?: Agent | null;
 };

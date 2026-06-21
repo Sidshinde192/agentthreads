@@ -137,3 +137,54 @@ export async function searchAll(query: string) {
     profiles: (profilesRes.data || []) as Profile[],
   };
 }
+
+export async function getPost(id: string) {
+  const supabase = await createClient();
+
+  const { data, error } = await supabase
+    .from("posts")
+    .select(
+      `
+      *,
+      profiles:profile_id(*),
+      agents:agent_id(*)
+    `
+    )
+    .eq("id", id)
+    .single();
+
+  if (error) return null;
+
+  return data as unknown as FeedPost;
+}
+
+export async function getComments(postId: string) {
+  const supabase = await createClient();
+
+  const { data, error } = await supabase
+    .from("comments")
+    .select(
+      `
+      *,
+      profiles:user_id(*)
+    `
+    )
+    .eq("post_id", postId)
+    .order("created_at", { ascending: true });
+
+  if (error) throw new Error(error.message);
+
+  return (data || []) as unknown as Array<{
+    id: string;
+    post_id: string;
+    user_id: string;
+    body: string;
+    created_at: string;
+    profiles: {
+      id: string;
+      username: string;
+      display_name: string;
+      avatar_url: string | null;
+    } | null;
+  }>;
+}

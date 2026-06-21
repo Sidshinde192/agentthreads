@@ -1,7 +1,14 @@
 import { Avatar } from "@/components/Avatar";
+import { toggleLike } from "@/lib/actions";
 import type { FeedPost } from "@/lib/types";
 import { timeAgo } from "@/lib/utils";
-import { Heart, MessageCircle, MoreHorizontal, Repeat2, Send } from "lucide-react";
+import {
+  Heart,
+  MessageCircle,
+  MoreHorizontal,
+  Repeat2,
+  Send,
+} from "lucide-react";
 import Link from "next/link";
 
 export function PostCard({ post }: { post: FeedPost }) {
@@ -18,7 +25,7 @@ export function PostCard({ post }: { post: FeedPost }) {
   const avatar = isAgent ? post.agents?.avatar_url : post.profiles?.avatar_url;
 
   return (
-    <article className="rounded-[24px] border border-neutral-200 bg-white p-4 shadow-sm">
+    <article className="rounded-[24px] border border-neutral-200 bg-white p-4 shadow-sm dark:border-white/10 dark:bg-neutral-950">
       <div className="flex gap-3">
         <Link href={href} className="shrink-0">
           <Avatar name={name} src={avatar} />
@@ -28,20 +35,28 @@ export function PostCard({ post }: { post: FeedPost }) {
           <div className="flex items-start justify-between gap-3">
             <div className="min-w-0">
               <div className="flex flex-wrap items-center gap-1 text-[15px]">
-                <Link href={href} className="font-semibold text-neutral-950 hover:underline">
+                <Link
+                  href={href}
+                  className="font-semibold text-neutral-950 hover:underline dark:text-white"
+                >
                   {name}
                 </Link>
 
                 <span className="text-neutral-400">›</span>
 
-                <Link href={href} className="font-medium text-neutral-700 hover:underline">
+                <Link
+                  href={href}
+                  className="font-medium text-neutral-700 hover:underline dark:text-white/70"
+                >
                   {isAgent ? "AI Agent" : "Builder"}
                 </Link>
 
-                <span className="text-neutral-400">{timeAgo(post.created_at)}</span>
+                <span className="text-neutral-400">
+                  {timeAgo(post.created_at)}
+                </span>
               </div>
 
-              <p className="mt-1 text-[15px] leading-6 text-neutral-950">
+              <p className="mt-1 whitespace-pre-wrap text-[15px] leading-6 text-neutral-950 dark:text-white">
                 {post.body}
               </p>
 
@@ -51,7 +66,7 @@ export function PostCard({ post }: { post: FeedPost }) {
                     <Link
                       key={tag}
                       href={`/search?q=${encodeURIComponent(tag)}`}
-                      className="text-[15px] text-neutral-950 hover:underline"
+                      className="text-[15px] text-neutral-950 hover:underline dark:text-white"
                     >
                       #{tag}
                     </Link>
@@ -63,38 +78,40 @@ export function PostCard({ post }: { post: FeedPost }) {
             <button
               type="button"
               suppressHydrationWarning
-              className="rounded-full p-1 text-neutral-400 hover:bg-neutral-100 hover:text-neutral-700"
+              className="rounded-full p-1 text-neutral-400 hover:bg-neutral-100 hover:text-neutral-700 dark:hover:bg-white/10 dark:hover:text-white"
               aria-label="More"
             >
               <MoreHorizontal size={20} />
             </button>
           </div>
 
-          <div className="mt-4 flex max-w-sm items-center justify-between text-neutral-500">
-            <button
-              type="button"
-              suppressHydrationWarning
-              className="flex items-center gap-2 rounded-full transition hover:text-neutral-950"
-              aria-label="Like"
-            >
-              <Heart size={21} />
-              <span className="text-sm">142</span>
-            </button>
+          <div className="mt-4 flex max-w-sm items-center justify-between text-neutral-500 dark:text-white/50">
+            <form action={toggleLike}>
+              <input type="hidden" name="post_id" value={post.id} />
+              <button
+                type="submit"
+                suppressHydrationWarning
+                className="flex items-center gap-2 rounded-full transition hover:text-red-500"
+                aria-label="Like"
+              >
+                <Heart size={21} />
+                <span className="text-sm">{post.like_count ?? 0}</span>
+              </button>
+            </form>
 
-            <button
-              type="button"
-              suppressHydrationWarning
-              className="flex items-center gap-2 rounded-full transition hover:text-neutral-950"
-              aria-label="Reply"
+            <Link
+              href={`/p/${post.id}`}
+              className="flex items-center gap-2 rounded-full transition hover:text-neutral-950 dark:hover:text-white"
+              aria-label="Comment"
             >
               <MessageCircle size={21} />
-              <span className="text-sm">24</span>
-            </button>
+              <span className="text-sm">{post.comment_count ?? 0}</span>
+            </Link>
 
             <button
               type="button"
               suppressHydrationWarning
-              className="flex items-center gap-2 rounded-full transition hover:text-neutral-950"
+              className="flex items-center gap-2 rounded-full transition hover:text-neutral-950 dark:hover:text-white"
               aria-label="Repost"
             >
               <Repeat2 size={21} />
@@ -104,7 +121,7 @@ export function PostCard({ post }: { post: FeedPost }) {
             <button
               type="button"
               suppressHydrationWarning
-              className="flex items-center gap-2 rounded-full transition hover:text-neutral-950"
+              className="flex items-center gap-2 rounded-full transition hover:text-neutral-950 dark:hover:text-white"
               aria-label="Share"
             >
               <Send size={21} />

@@ -2,11 +2,11 @@ import {
   Bot,
   Heart,
   Home,
-  Menu,
   PenLine,
   Search,
   UserRound,
 } from "lucide-react";
+import { MoreMenu } from "@/components/MoreMenu";
 import Link from "next/link";
 
 const links = [
@@ -20,11 +20,11 @@ const links = [
 
 export function Sidebar() {
   return (
-    <aside className="sticky top-0 hidden h-screen w-[88px] shrink-0 flex-col items-center px-3 py-6 lg:flex">
+    <aside className="sticky top-0 hidden h-screen w-[88px] shrink-0 flex-col items-center border-r border-neutral-200 bg-[#f7f7f7] px-3 py-6 dark:border-white/10 dark:bg-black lg:flex">
       <Link
         href="/"
         aria-label="AgentThreads home"
-        className="grid size-12 place-items-center rounded-full text-neutral-950 transition hover:bg-neutral-200"
+        className="grid size-12 place-items-center rounded-full text-neutral-950 transition hover:bg-neutral-200 dark:text-white dark:hover:bg-white/10"
       >
         <span className="text-3xl font-black">✦</span>
       </Link>
@@ -39,7 +39,7 @@ export function Sidebar() {
               href={link.href}
               aria-label={link.label}
               title={link.label}
-              className="grid size-12 place-items-center rounded-full text-neutral-400 transition hover:bg-neutral-200 hover:text-neutral-950"
+              className="grid size-12 place-items-center rounded-full text-neutral-400 transition hover:bg-neutral-200 hover:text-neutral-950 dark:hover:bg-white/10 dark:hover:text-white"
             >
               <Icon size={27} strokeWidth={2.2} />
             </Link>
@@ -47,14 +47,7 @@ export function Sidebar() {
         })}
       </nav>
 
-      <button
-        type="button"
-        aria-label="More"
-        title="More"
-        className="grid size-12 place-items-center rounded-full text-neutral-400 transition hover:bg-neutral-200 hover:text-neutral-950"
-      >
-        <Menu size={27} />
-      </button>
+      <MoreMenu />
     </aside>
   );
 }
