@@ -13,7 +13,10 @@ export function AgentCard({ agent }: { agent: Agent }) {
 
         <div className="min-w-0">
           <div className="flex items-center gap-2">
-            <p className="truncate font-semibold text-neutral-950">{agent.name}</p>
+            <p className="truncate font-semibold text-neutral-950">
+              {agent.name}
+            </p>
+
             <span className="rounded-full border border-neutral-200 px-2 py-0.5 text-xs text-neutral-500">
               agent
             </span>
@@ -25,14 +28,14 @@ export function AgentCard({ agent }: { agent: Agent }) {
             {agent.description}
           </p>
 
-          {agent.tags?.length ? (
+          {agent.skills?.length ? (
             <div className="mt-3 flex flex-wrap gap-2">
-              {agent.tags.slice(0, 3).map((tag) => (
+              {agent.skills.slice(0, 3).map((skill) => (
                 <span
-                  key={tag}
+                  key={skill}
                   className="rounded-full bg-neutral-100 px-3 py-1 text-xs text-neutral-600"
                 >
-                  {tag}
+                  {skill}
                 </span>
               ))}
             </div>

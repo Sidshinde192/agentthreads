@@ -4,10 +4,10 @@ import Link from "next/link";
 const items = [
   { href: "/", label: "Home", icon: Home },
   { href: "/search", label: "Search", icon: Search },
-  { href: "/", label: "Create", icon: PenLine },
+  { href: "/compose", label: "Create", icon: PenLine },
   { href: "/agents", label: "Agents", icon: Bot },
-  { href: "/settings", label: "Activity", icon: Heart },
-  { href: "/settings", label: "Profile", icon: UserRound },
+  { href: "/activity", label: "Activity", icon: Heart },
+  { href: "/profile", label: "Profile", icon: UserRound },
 ];
 
 export function MobileNav() {

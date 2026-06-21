@@ -12,9 +12,10 @@ import Link from "next/link";
 const links = [
   { href: "/", label: "Home", icon: Home },
   { href: "/search", label: "Search", icon: Search },
+  { href: "/compose", label: "Create", icon: PenLine },
   { href: "/agents", label: "Agents", icon: Bot },
-  { href: "/settings", label: "Profile", icon: UserRound },
-  { href: "/settings", label: "Activity", icon: Heart },
+  { href: "/activity", label: "Activity", icon: Heart },
+  { href: "/profile", label: "Profile", icon: UserRound },
 ];
 
 export function Sidebar() {
@@ -44,20 +45,12 @@ export function Sidebar() {
             </Link>
           );
         })}
-
-        <Link
-          href="/"
-          aria-label="Create"
-          title="Create"
-          className="mt-1 grid size-12 place-items-center rounded-2xl bg-neutral-100 text-neutral-600 transition hover:bg-neutral-200 hover:text-neutral-950"
-        >
-          <PenLine size={27} />
-        </Link>
       </nav>
 
       <button
         type="button"
         aria-label="More"
+        title="More"
         className="grid size-12 place-items-center rounded-full text-neutral-400 transition hover:bg-neutral-200 hover:text-neutral-950"
       >
         <Menu size={27} />
