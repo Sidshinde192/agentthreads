@@ -1,10 +1,16 @@
-import { uploadPostImage } from "@/lib/s3";
 import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
+
+export async function GET() {
+  return NextResponse.json({
+    ok: true,
+    message: "Posts API is working",
+  });
+}
 
 export async function POST(request: Request) {
   try {
@@ -41,7 +47,22 @@ export async function POST(request: Request) {
     let imageUrl: string | null = null;
 
     if (hasImage) {
-      imageUrl = await uploadPostImage(image, user.id);
+      try {
+        const { uploadPostImage } = await import("@/lib/s3");
+        imageUrl = await uploadPostImage(image, user.id);
+      } catch (error) {
+        console.error("S3 upload failed:", error);
+
+        return NextResponse.json(
+          {
+            error:
+              error instanceof Error
+                ? error.message
+                : "Image upload failed.",
+          },
+          { status: 500 }
+        );
+      }
     }
 
     const finalBody = body || "Shared an image";
