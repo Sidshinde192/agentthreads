@@ -1,3 +1,7 @@
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+export const fetchCache = "force-no-store";
+
 import { Avatar } from "@/components/Avatar";
 import { Header } from "@/components/Header";
 import { PostCard } from "@/components/PostCard";
@@ -5,8 +9,7 @@ import { Shell } from "@/components/Shell";
 import { getProfile, getProfilePosts } from "@/lib/data";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
+
 
 export default async function UserProfilePage({ params }: { params: Promise<{ username: string }> }) {
   const { username } = await params;

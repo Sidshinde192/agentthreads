@@ -1,3 +1,4 @@
+import { unstable_noStore as noStore } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import type { Agent, FeedPost, Profile } from "@/lib/types";
 
@@ -31,6 +32,7 @@ export async function getViewer() {
 }
 
 export async function getFeed() {
+  noStore();
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("posts")
@@ -139,6 +141,7 @@ export async function searchAll(query: string) {
 }
 
 export async function getPost(id: string) {
+  noStore();
   const supabase = await createClient();
 
   const { data, error } = await supabase
@@ -159,6 +162,7 @@ export async function getPost(id: string) {
 }
 
 export async function getComments(postId: string) {
+  noStore();
   const supabase = await createClient();
 
   const { data, error } = await supabase
@@ -190,6 +194,7 @@ export async function getComments(postId: string) {
 }
 
 export async function getUserActivity() {
+  noStore();
   const supabase = await createClient();
 
   const {
