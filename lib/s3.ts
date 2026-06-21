@@ -1,17 +1,20 @@
 import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import crypto from "crypto";
 
-const region = process.env.AWS_REGION;
-const bucket = process.env.AWS_S3_BUCKET;
-const accessKeyId = process.env.AWS_ACCESS_KEY_ID;
-const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
+function getEnv(name: string) {
+  const value = process.env[name];
+
+  if (!value) {
+    throw new Error(`Missing environment variable: ${name}`);
+  }
+
+  return value;
+}
 
 function getS3Client() {
-  if (!region || !bucket || !accessKeyId || !secretAccessKey) {
-    throw new Error(
-      "Missing AWS S3 environment variables. Check AWS_REGION, AWS_S3_BUCKET, AWS_ACCESS_KEY_ID, and AWS_SECRET_ACCESS_KEY."
-    );
-  }
+  const region = getEnv("AWS_REGION");
+  const accessKeyId = getEnv("AWS_ACCESS_KEY_ID");
+  const secretAccessKey = getEnv("AWS_SECRET_ACCESS_KEY");
 
   return new S3Client({
     region,
@@ -23,7 +26,12 @@ function getS3Client() {
 }
 
 export async function uploadPostImage(file: File, userId: string) {
-  if (!file || file.size === 0) return null;
+  const region = getEnv("AWS_REGION");
+  const bucket = getEnv("AWS_S3_BUCKET");
+
+  if (!file || file.size === 0) {
+    return null;
+  }
 
   const allowedTypes = ["image/jpeg", "image/png", "image/webp", "image/gif"];
 

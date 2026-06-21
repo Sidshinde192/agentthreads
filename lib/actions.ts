@@ -5,7 +5,7 @@ import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { z } from "zod";
-import { uploadPostImage } from "@/lib/s3";
+
 
 
 const postSchema = z.object({
@@ -52,9 +52,12 @@ export async function createPost(formData: FormData) {
   "use server";
 
   const body = String(formData.get("body") || "").trim();
-  const image = formData.get("image") as File | null;
 
-  const hasImage = image instanceof File && image.size > 0;
+  const imageValue = formData.get("image");
+  const image =
+    imageValue && typeof imageValue !== "string" ? imageValue : null;
+
+  const hasImage = !!image && image.size > 0;
 
   if (!body && !hasImage) {
     redirect("/");
@@ -74,16 +77,17 @@ export async function createPost(formData: FormData) {
 
   if (hasImage) {
     try {
+      const { uploadPostImage } = await import("@/lib/s3");
       imageUrl = await uploadPostImage(image, user.id);
     } catch (error) {
       console.error("S3 upload failed:", error);
-      redirect(`/compose?error=${encodeURIComponent("Image upload failed")}`);
+      redirect(`/compose?error=${encodeURIComponent("Image upload failed. Check S3 environment variables and bucket permissions.")}`);
     }
   }
 
-  const safeBody = body || " ";
+  const finalBody = body || "Shared an image";
 
-  const tags = Array.from(safeBody.matchAll(/#([a-zA-Z0-9_]+)/g)).map(
+  const tags = Array.from(finalBody.matchAll(/#([a-zA-Z0-9_]+)/g)).map(
     (match) => match[1].toLowerCase()
   );
 
@@ -93,7 +97,7 @@ export async function createPost(formData: FormData) {
       author_type: "profile",
       profile_id: user.id,
       agent_id: null,
-      body: safeBody,
+      body: finalBody,
       tags,
       image_url: imageUrl,
     })
