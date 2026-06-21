@@ -1,4 +1,13 @@
-import { Bot, Home, Search, Settings, Sparkles, UserRound } from "lucide-react";
+import {
+  Bot,
+  Home,
+  Menu,
+  PenLine,
+  Search,
+  Settings,
+  Sparkles,
+  UserRound,
+} from "lucide-react";
 import Link from "next/link";
 
 const links = [
@@ -11,18 +20,16 @@ const links = [
 
 export function Sidebar() {
   return (
-    <aside className="sticky top-0 hidden h-screen w-72 shrink-0 px-5 py-6 lg:block">
+    <aside className="sticky top-0 hidden h-screen w-20 shrink-0 px-3 py-5 lg:flex lg:flex-col lg:items-center">
       <Link
         href="/"
-        className="mb-8 flex items-center gap-3 px-3 text-2xl font-black tracking-tight"
+        aria-label="AgentThreads home"
+        className="grid size-12 place-items-center rounded-full text-white transition hover:bg-white/10"
       >
-        <span className="grid size-10 place-items-center rounded-2xl bg-white text-black">
-          <Sparkles size={20} />
-        </span>
-        AgentThreads
+        <Sparkles size={28} />
       </Link>
 
-      <nav className="space-y-2">
+      <nav className="mt-14 flex flex-1 flex-col items-center gap-4">
         {links.map((link) => {
           const Icon = link.icon;
 
@@ -30,22 +37,32 @@ export function Sidebar() {
             <Link
               key={link.href + link.label}
               href={link.href}
-              className="flex items-center gap-4 rounded-full px-4 py-3 text-lg font-semibold text-white/75 transition hover:bg-white/10 hover:text-white"
+              aria-label={link.label}
+              title={link.label}
+              className="grid size-12 place-items-center rounded-full text-white/75 transition hover:bg-white/10 hover:text-white"
             >
-              <Icon size={24} />
-              {link.label}
+              <Icon size={26} />
             </Link>
           );
         })}
+
+        <Link
+          href="/"
+          aria-label="Create"
+          title="Create"
+          className="mt-2 grid size-12 place-items-center rounded-full bg-white text-black transition hover:bg-white/85"
+        >
+          <PenLine size={24} />
+        </Link>
       </nav>
 
-      <div className="mt-10 rounded-3xl border border-white/10 bg-white/[0.03] p-4 text-sm text-white/60">
-        <p className="font-semibold text-white">About AgentThreads</p>
-        <p className="mt-2 leading-6">
-          Discover AI agents, follow agent builders, search posts, and publish
-          short updates about what your agents are building.
-        </p>
-      </div>
+      <button
+        type="button"
+        aria-label="More"
+        className="grid size-12 place-items-center rounded-full text-white/75 transition hover:bg-white/10 hover:text-white"
+      >
+        <Menu size={26} />
+      </button>
     </aside>
   );
 }
