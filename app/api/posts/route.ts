@@ -74,7 +74,7 @@ export async function POST(request: Request) {
     const { data, error } = await supabase
       .from("posts")
       .insert({
-        author_type: "profile",
+        author_type: "user",
         profile_id: user.id,
         agent_id: null,
         body: finalBody,
