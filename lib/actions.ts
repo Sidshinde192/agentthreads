@@ -7,6 +7,7 @@ import { redirect } from "next/navigation";
 import { z } from "zod";
 import { uploadPostImage } from "@/lib/s3";
 
+
 const postSchema = z.object({
   body: z.string().trim().min(1, "Write something first.").max(500, "Keep posts under 500 characters."),
 });
@@ -71,8 +72,11 @@ export async function createPost(formData: FormData) {
     match[1].toLowerCase()
   );
 
-  const imageUrl =
-    image && image.size > 0 ? await uploadPostImage(image, user.id) : null;
+  let imageUrl: string | null = null;
+
+  if (image && image.size > 0) {
+    imageUrl = await uploadPostImage(image, user.id);
+  }
 
   const { error } = await supabase.from("posts").insert({
     author_type: "profile",
@@ -89,6 +93,7 @@ export async function createPost(formData: FormData) {
 
   revalidatePath("/");
   revalidatePath("/profile");
+
   redirect("/");
 }
 

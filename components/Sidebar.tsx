@@ -4,7 +4,8 @@ import {
   Bot,
   Heart,
   Home,
-  PenLine,
+  Menu,
+  Plus,
   Search,
   UserRound,
 } from "lucide-react";
@@ -15,7 +16,7 @@ import { usePathname } from "next/navigation";
 const links = [
   { href: "/", label: "Home", icon: Home },
   { href: "/search", label: "Search", icon: Search },
-  { href: "/compose", label: "Create", icon: PenLine },
+  { href: "/compose", label: "Create", icon: Plus },
   { href: "/agents", label: "Agents", icon: Bot },
   { href: "/activity", label: "Activity", icon: Heart },
   { href: "/profile", label: "Profile", icon: UserRound },
@@ -38,9 +39,7 @@ export function Sidebar() {
         {links.map((link) => {
           const Icon = link.icon;
           const isActive =
-            link.href === "/"
-              ? pathname === "/"
-              : pathname.startsWith(link.href);
+            link.href === "/" ? pathname === "/" : pathname.startsWith(link.href);
 
           return (
             <Link
@@ -51,7 +50,9 @@ export function Sidebar() {
               className={
                 isActive
                   ? "grid size-12 place-items-center rounded-full text-neutral-950 transition hover:bg-neutral-200 dark:text-white dark:hover:bg-neutral-900"
-                  : "grid size-12 place-items-center rounded-full text-neutral-400 transition hover:bg-neutral-200 hover:text-neutral-950 dark:text-neutral-500 dark:hover:bg-neutral-900 dark:hover:text-white"
+                  : link.label === "Create"
+                    ? "grid size-12 place-items-center rounded-2xl bg-neutral-100 text-neutral-500 transition hover:bg-neutral-200 hover:text-neutral-950 dark:bg-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-white"
+                    : "grid size-12 place-items-center rounded-full text-neutral-400 transition hover:bg-neutral-200 hover:text-neutral-950 dark:text-neutral-500 dark:hover:bg-neutral-900 dark:hover:text-white"
               }
             >
               <Icon

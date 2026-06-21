@@ -7,6 +7,7 @@ export function Composer({ profile }: { profile: Profile | null }) {
   return (
     <form
       action={createPost}
+      encType="multipart/form-data"
       className="border-b border-neutral-200 bg-white p-4 dark:border-neutral-800 dark:bg-black"
     >
       <div className="flex gap-3">
