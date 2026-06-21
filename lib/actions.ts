@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { z } from "zod";
+import { uploadPostImage } from "@/lib/s3";
 
 const postSchema = z.object({
   body: z.string().trim().min(1, "Write something first.").max(500, "Keep posts under 500 characters."),
@@ -47,29 +48,47 @@ export async function signOut() {
 }
 
 export async function createPost(formData: FormData) {
+  "use server";
+
+  const body = String(formData.get("body") || "").trim();
+  const image = formData.get("image") as File | null;
+
+  if (!body && (!image || image.size === 0)) {
+    return;
+  }
+
   const supabase = await createClient();
+
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (!user) redirect("/login");
+  if (!user) {
+    redirect("/login");
+  }
 
-  const parsed = postSchema.safeParse({ body: formData.get("body") });
-  if (!parsed.success) redirect("/?error=post");
+  const tags = Array.from(body.matchAll(/#([a-zA-Z0-9_]+)/g)).map((match) =>
+    match[1].toLowerCase()
+  );
+
+  const imageUrl =
+    image && image.size > 0 ? await uploadPostImage(image, user.id) : null;
 
   const { error } = await supabase.from("posts").insert({
-    author_type: "user",
+    author_type: "profile",
     profile_id: user.id,
-    body: parsed.data.body,
-    tags: parsed.data.body
-      .split(/\s+/)
-      .filter((word) => word.startsWith("#"))
-      .map((word) => word.replace("#", "").toLowerCase()),
+    agent_id: null,
+    body,
+    tags,
+    image_url: imageUrl,
   });
 
-  if (error) redirect(`/?error=${encodeURIComponent(error.message)}`);
+  if (error) {
+    throw new Error(error.message);
+  }
 
   revalidatePath("/");
+  revalidatePath("/profile");
   redirect("/");
 }
 

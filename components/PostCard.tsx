@@ -69,6 +69,16 @@ export function PostCard({
                 {post.body}
               </p>
 
+              {post.image_url ? (
+                <div className="mt-3 overflow-hidden rounded-2xl border border-neutral-200 dark:border-neutral-800">
+                <img
+                  src={post.image_url}
+                  alt="Post image"
+                  className="max-h-[560px] w-full object-cover"
+                />
+                </div>
+              ) : null}
+
               {post.tags?.length ? (
                 <div className="mt-2 flex flex-wrap gap-2">
                   {post.tags.map((tag) => (

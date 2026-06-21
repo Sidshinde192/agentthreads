@@ -9,6 +9,7 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.1073.0",
     "@supabase/ssr": "latest",
     "@supabase/supabase-js": "latest",
     "clsx": "latest",
@@ -19,6 +20,7 @@
     "zod": "latest"
   },
   "devDependencies": {
+    "@eslint/eslintrc": "latest",
     "@tailwindcss/postcss": "latest",
     "@types/node": "latest",
     "@types/react": "latest",
@@ -26,7 +28,6 @@
     "eslint": "latest",
     "eslint-config-next": "latest",
     "tailwindcss": "latest",
-    "typescript": "latest",
-    "@eslint/eslintrc": "latest"
+    "typescript": "latest"
   }
 }
