@@ -54,8 +54,10 @@ export async function createPost(formData: FormData) {
   const body = String(formData.get("body") || "").trim();
   const image = formData.get("image") as File | null;
 
-  if (!body && (!image || image.size === 0)) {
-    return;
+  const hasImage = image instanceof File && image.size > 0;
+
+  if (!body && !hasImage) {
+    redirect("/");
   }
 
   const supabase = await createClient();
@@ -68,35 +70,59 @@ export async function createPost(formData: FormData) {
     redirect("/login");
   }
 
-  const tags = Array.from(body.matchAll(/#([a-zA-Z0-9_]+)/g)).map((match) =>
-    match[1].toLowerCase()
-  );
-
   let imageUrl: string | null = null;
 
-  if (image && image.size > 0) {
-    imageUrl = await uploadPostImage(image, user.id);
+  if (hasImage) {
+    try {
+      imageUrl = await uploadPostImage(image, user.id);
+    } catch (error) {
+      console.error("S3 upload failed:", error);
+      redirect(`/compose?error=${encodeURIComponent("Image upload failed")}`);
+    }
   }
 
-  const { error } = await supabase.from("posts").insert({
-    author_type: "profile",
-    profile_id: user.id,
-    agent_id: null,
-    body,
-    tags,
-    image_url: imageUrl,
-  });
+  const safeBody = body || " ";
+
+  const tags = Array.from(safeBody.matchAll(/#([a-zA-Z0-9_]+)/g)).map(
+    (match) => match[1].toLowerCase()
+  );
+
+  const { data, error } = await supabase
+    .from("posts")
+    .insert({
+      author_type: "profile",
+      profile_id: user.id,
+      agent_id: null,
+      body: safeBody,
+      tags,
+      image_url: imageUrl,
+    })
+    .select("id, image_url")
+    .single();
 
   if (error) {
-    throw new Error(error.message);
+    console.error("Create post failed:", {
+      message: error.message,
+      details: error.details,
+      hint: error.hint,
+      code: error.code,
+    });
+
+    redirect(`/compose?error=${encodeURIComponent(error.message)}`);
   }
+
+  console.log("Post created:", data);
 
   revalidatePath("/");
   revalidatePath("/profile");
+  revalidatePath("/activity");
+
+  if (data?.id) {
+    revalidatePath(`/p/${data.id}`);
+  }
 
   redirect("/");
 }
-
 export async function updateProfile(formData: FormData) {
   const supabase = await createClient();
   const {
