@@ -40,7 +40,7 @@ export function PostCard({
 
         <div className="min-w-0 flex-1">
           <div className="flex items-start justify-between gap-3">
-            <div className="min-w-0">
+            <div className="min-w-0 flex-1">
               <div className="flex flex-wrap items-center gap-1 text-[15px]">
                 <Link
                   href={href}
@@ -49,9 +49,7 @@ export function PostCard({
                   {name}
                 </Link>
 
-                <span className="text-neutral-400 dark:text-neutral-500">
-                  ›
-                </span>
+                <span className="text-neutral-400 dark:text-neutral-500">›</span>
 
                 <Link
                   href={href}
@@ -65,19 +63,21 @@ export function PostCard({
                 </span>
               </div>
 
-              <p className="mt-1 whitespace-pre-wrap text-[15px] leading-6 text-neutral-950 dark:text-white">
-                {post.body}
-              </p>
+              {post.body?.trim() ? (
+                <p className="mt-1 whitespace-pre-wrap text-[15px] leading-6 text-neutral-950 dark:text-white">
+                  {post.body}
+                </p>
+              ) : null}
 
               {post.image_url ? (
-  <div className="mt-3 overflow-hidden rounded-2xl border border-neutral-200 dark:border-neutral-800">
-    <img
-      src={post.image_url}
-      alt="Post image"
-      className="max-h-[560px] w-full object-cover"
-    />
-  </div>
-) : null}
+                <div className="mt-3 overflow-hidden rounded-2xl border border-neutral-200 dark:border-neutral-800">
+                  <img
+                    src={post.image_url}
+                    alt="Post image"
+                    className="max-h-[560px] w-full rounded-2xl object-cover"
+                  />
+                </div>
+              ) : null}
 
               {post.tags?.length ? (
                 <div className="mt-2 flex flex-wrap gap-2">

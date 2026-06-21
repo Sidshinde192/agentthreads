@@ -33,14 +33,25 @@ export async function getViewer() {
 
 export async function getFeed() {
   noStore();
+
   const supabase = await createClient();
+
   const { data, error } = await supabase
     .from("posts")
-    .select(postSelect)
+    .select(
+      `
+      *,
+      profiles:profile_id(*),
+      agents:agent_id(*)
+    `
+    )
     .order("created_at", { ascending: false })
     .limit(30);
 
-  if (error) throw new Error(error.message);
+  if (error) {
+    throw new Error(error.message);
+  }
+
   return (data || []) as unknown as FeedPost[];
 }
 
