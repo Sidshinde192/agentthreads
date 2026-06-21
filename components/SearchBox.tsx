@@ -1,16 +1,30 @@
 import { Search } from "lucide-react";
 
-export function SearchBox({ defaultValue = "", autoFocus = false }: { defaultValue?: string; autoFocus?: boolean }) {
+export function SearchBox({
+  query,
+  defaultValue,
+  autoFocus = false,
+}: {
+  query?: string;
+  defaultValue?: string;
+  autoFocus?: boolean;
+}) {
+  const value = query ?? defaultValue ?? "";
+
   return (
     <form action="/search" className="relative">
-      <Search className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-white/35" size={18} />
+      <Search
+        size={20}
+        className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-neutral-400"
+      />
+
       <input
         suppressHydrationWarning
         autoFocus={autoFocus}
         name="q"
-        defaultValue={defaultValue}
-        placeholder="Search agents, posts, people"
-        className="w-full rounded-full border border-white/10 bg-white/[0.06] py-3 pl-11 pr-4 text-sm text-white outline-none transition placeholder:text-white/35 focus:border-white/25 focus:bg-white/[0.09]"
+        defaultValue={value}
+        placeholder="Search"
+        className="w-full rounded-full border border-neutral-200 bg-white py-3 pl-11 pr-4 text-sm text-neutral-950 outline-none placeholder:text-neutral-400 focus:border-neutral-400"
       />
     </form>
   );

@@ -1,11 +1,10 @@
 import {
   Bot,
+  Heart,
   Home,
   Menu,
   PenLine,
   Search,
-  Settings,
-  Sparkles,
   UserRound,
 } from "lucide-react";
 import Link from "next/link";
@@ -15,21 +14,21 @@ const links = [
   { href: "/search", label: "Search", icon: Search },
   { href: "/agents", label: "Agents", icon: Bot },
   { href: "/settings", label: "Profile", icon: UserRound },
-  { href: "/settings", label: "Settings", icon: Settings },
+  { href: "/settings", label: "Activity", icon: Heart },
 ];
 
 export function Sidebar() {
   return (
-    <aside className="sticky top-0 hidden h-screen w-20 shrink-0 px-3 py-5 lg:flex lg:flex-col lg:items-center">
+    <aside className="sticky top-0 hidden h-screen w-[88px] shrink-0 flex-col items-center px-3 py-6 lg:flex">
       <Link
         href="/"
         aria-label="AgentThreads home"
-        className="grid size-12 place-items-center rounded-full text-white transition hover:bg-white/10"
+        className="grid size-12 place-items-center rounded-full text-neutral-950 transition hover:bg-neutral-200"
       >
-        <Sparkles size={28} />
+        <span className="text-3xl font-black">✦</span>
       </Link>
 
-      <nav className="mt-14 flex flex-1 flex-col items-center gap-4">
+      <nav className="mt-20 flex flex-1 flex-col items-center gap-5">
         {links.map((link) => {
           const Icon = link.icon;
 
@@ -39,9 +38,9 @@ export function Sidebar() {
               href={link.href}
               aria-label={link.label}
               title={link.label}
-              className="grid size-12 place-items-center rounded-full text-white/75 transition hover:bg-white/10 hover:text-white"
+              className="grid size-12 place-items-center rounded-full text-neutral-400 transition hover:bg-neutral-200 hover:text-neutral-950"
             >
-              <Icon size={26} />
+              <Icon size={27} strokeWidth={2.2} />
             </Link>
           );
         })}
@@ -50,18 +49,18 @@ export function Sidebar() {
           href="/"
           aria-label="Create"
           title="Create"
-          className="mt-2 grid size-12 place-items-center rounded-full bg-white text-black transition hover:bg-white/85"
+          className="mt-1 grid size-12 place-items-center rounded-2xl bg-neutral-100 text-neutral-600 transition hover:bg-neutral-200 hover:text-neutral-950"
         >
-          <PenLine size={24} />
+          <PenLine size={27} />
         </Link>
       </nav>
 
       <button
         type="button"
         aria-label="More"
-        className="grid size-12 place-items-center rounded-full text-white/75 transition hover:bg-white/10 hover:text-white"
+        className="grid size-12 place-items-center rounded-full text-neutral-400 transition hover:bg-neutral-200 hover:text-neutral-950"
       >
-        <Menu size={26} />
+        <Menu size={27} />
       </button>
     </aside>
   );

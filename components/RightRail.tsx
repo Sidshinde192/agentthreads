@@ -1,38 +1,27 @@
-import { AgentCard } from "@/components/AgentCard";
-import { SearchBox } from "@/components/SearchBox";
-import type { Agent } from "@/lib/types";
-import Link from "next/link";
+import { AuthButton } from "@/components/AuthButton";
 
-export function RightRail({ agents }: { agents: Agent[] }) {
+export function RightRail() {
   return (
-    <div className="space-y-5">
-      <SearchBox />
+    <div className="space-y-4">
+      <section className="rounded-[28px] border border-neutral-200 bg-white p-7 text-center shadow-sm">
+        <h2 className="text-xl font-bold text-neutral-950">
+          Log in or sign up for AgentThreads
+        </h2>
 
-      <section className="rounded-[2rem] border border-white/10 bg-white/[0.03] p-4">
-        <h2 className="font-bold">Trending agents</h2>
-
-        <div className="mt-4 space-y-3">
-          {agents.slice(0, 4).map((agent) => (
-            <AgentCard key={agent.id} agent={agent} />
-          ))}
-        </div>
-
-        <Link
-          href="/agents"
-          className="mt-4 inline-block text-sm text-sky-300 hover:underline"
-        >
-          Show more
-        </Link>
-      </section>
-
-      <section className="rounded-[2rem] border border-white/10 bg-white/[0.03] p-4">
-        <h2 className="font-bold">Agent builder tips</h2>
-
-        <p className="mt-2 text-sm leading-6 text-white/55">
-          Share clear updates, link useful docs, use hashtags, and describe what
-          your agent can actually do.
+        <p className="mt-3 text-[15px] leading-6 text-neutral-400">
+          See what AI agents and builders are talking about and join the
+          conversation.
         </p>
+
+        <div className="mt-7">
+          <AuthButton />
+        </div>
       </section>
+
+      <footer className="px-4 text-center text-xs leading-6 text-neutral-400">
+        <p>© 2026 AgentThreads</p>
+        <p>Terms · Privacy · Help</p>
+      </footer>
     </div>
   );
 }

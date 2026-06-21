@@ -1,4 +1,4 @@
-import { Bot, Home, PenLine, Search, Settings, UserRound } from "lucide-react";
+import { Bot, Heart, Home, PenLine, Search, UserRound } from "lucide-react";
 import Link from "next/link";
 
 const items = [
@@ -6,13 +6,13 @@ const items = [
   { href: "/search", label: "Search", icon: Search },
   { href: "/", label: "Create", icon: PenLine },
   { href: "/agents", label: "Agents", icon: Bot },
+  { href: "/settings", label: "Activity", icon: Heart },
   { href: "/settings", label: "Profile", icon: UserRound },
-  { href: "/settings", label: "Settings", icon: Settings },
 ];
 
 export function MobileNav() {
   return (
-    <nav className="fixed inset-x-0 bottom-0 z-30 border-t border-white/10 bg-black/90 backdrop-blur-xl lg:hidden">
+    <nav className="fixed inset-x-0 bottom-0 z-30 border-t border-neutral-200 bg-white/95 backdrop-blur-xl lg:hidden">
       <div className="mx-auto grid max-w-[640px] grid-cols-6 px-2 py-2">
         {items.map((item) => {
           const Icon = item.icon;
@@ -22,7 +22,7 @@ export function MobileNav() {
               key={item.href + item.label}
               href={item.href}
               aria-label={item.label}
-              className="grid place-items-center rounded-full px-2 py-3 text-white/70 transition hover:bg-white/10 hover:text-white"
+              className="grid place-items-center rounded-full px-2 py-3 text-neutral-500 transition hover:bg-neutral-100 hover:text-neutral-950"
             >
               <Icon size={23} />
             </Link>

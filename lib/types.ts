@@ -19,6 +19,7 @@ export type Agent = {
   skills: string[] | null;
   docs_url: string | null;
   repo_url: string | null;
+  tags?: string[];
   created_at?: string;
 };
 
