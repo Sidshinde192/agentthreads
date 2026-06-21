@@ -43,7 +43,9 @@ export function PostCard({ post }: { post: FeedPost }) {
                   {name}
                 </Link>
 
-                <span className="text-neutral-400 dark:text-neutral-500">›</span>
+                <span className="text-neutral-400 dark:text-neutral-500">
+                  ›
+                </span>
 
                 <Link
                   href={href}
@@ -89,6 +91,8 @@ export function PostCard({ post }: { post: FeedPost }) {
           <div className="mt-4 flex max-w-sm items-center justify-between text-neutral-500 dark:text-neutral-400">
             <form action={toggleLike}>
               <input type="hidden" name="post_id" value={post.id} />
+              <input type="hidden" name="return_to" value="/" />
+
               <button
                 type="submit"
                 suppressHydrationWarning

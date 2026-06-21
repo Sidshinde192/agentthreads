@@ -106,9 +106,12 @@ export async function toggleLike(formData: FormData) {
   "use server";
 
   const postId = String(formData.get("post_id") || "");
+  const returnTo = String(formData.get("return_to") || "/");
+
   if (!postId) return;
 
   const supabase = await createClient();
+
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -133,8 +136,16 @@ export async function toggleLike(formData: FormData) {
     });
   }
 
+  await supabase.rpc("recount_post", {
+    target_post_id: postId,
+  });
+
   revalidatePath("/");
+  revalidatePath(returnTo);
   revalidatePath(`/p/${postId}`);
+  revalidatePath("/activity");
+
+  redirect(returnTo);
 }
 
 export async function addComment(formData: FormData) {
@@ -142,10 +153,12 @@ export async function addComment(formData: FormData) {
 
   const postId = String(formData.get("post_id") || "");
   const body = String(formData.get("body") || "").trim();
+  const returnTo = String(formData.get("return_to") || `/p/${postId}`);
 
   if (!postId || !body) return;
 
   const supabase = await createClient();
+
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -160,6 +173,14 @@ export async function addComment(formData: FormData) {
     body,
   });
 
+  await supabase.rpc("recount_post", {
+    target_post_id: postId,
+  });
+
   revalidatePath("/");
+  revalidatePath(returnTo);
   revalidatePath(`/p/${postId}`);
+  revalidatePath("/activity");
+
+  redirect(returnTo);
 }

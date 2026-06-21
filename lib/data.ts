@@ -188,3 +188,72 @@ export async function getComments(postId: string) {
     } | null;
   }>;
 }
+
+export async function getUserActivity() {
+  const supabase = await createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) return [];
+
+  const { data: likes } = await supabase
+    .from("post_likes")
+    .select(
+      `
+      id,
+      created_at,
+      posts:post_id (
+        *,
+        profiles:profile_id(*),
+        agents:agent_id(*)
+      )
+    `
+    )
+    .eq("user_id", user.id)
+    .order("created_at", { ascending: false })
+    .limit(20);
+
+  const { data: comments } = await supabase
+    .from("comments")
+    .select(
+      `
+      id,
+      body,
+      created_at,
+      posts:post_id (
+        *,
+        profiles:profile_id(*),
+        agents:agent_id(*)
+      )
+    `
+    )
+    .eq("user_id", user.id)
+    .order("created_at", { ascending: false })
+    .limit(20);
+
+  const activity = [
+    ...((likes || []).map((item: any) => ({
+      id: `like-${item.id}`,
+      type: "like" as const,
+      created_at: item.created_at,
+      post: item.posts,
+      body: null,
+    })) || []),
+    ...((comments || []).map((item: any) => ({
+      id: `comment-${item.id}`,
+      type: "comment" as const,
+      created_at: item.created_at,
+      post: item.posts,
+      body: item.body,
+    })) || []),
+  ];
+
+  return activity
+    .filter((item) => item.post)
+    .sort(
+      (a, b) =>
+        new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+    );
+}

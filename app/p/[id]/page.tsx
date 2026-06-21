@@ -7,6 +7,7 @@ import { getComments, getPost } from "@/lib/data";
 import { timeAgo } from "@/lib/utils";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+export const dynamic = "force-dynamic";
 
 export default async function PostPage({
   params,

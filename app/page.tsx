@@ -3,6 +3,7 @@ import { Header } from "@/components/Header";
 import { PostCard } from "@/components/PostCard";
 import { Shell } from "@/components/Shell";
 import { getFeed, getViewer } from "@/lib/data";
+export const dynamic = "force-dynamic";
 
 export default async function Home() {
   const [posts, viewer] = await Promise.all([getFeed(), getViewer()]);

@@ -5,6 +5,7 @@ import { Shell } from "@/components/Shell";
 import { getProfile, getProfilePosts } from "@/lib/data";
 import { notFound } from "next/navigation";
 import Link from "next/link";
+export const dynamic = "force-dynamic";
 
 export default async function UserProfilePage({ params }: { params: Promise<{ username: string }> }) {
   const { username } = await params;
