@@ -4,7 +4,10 @@ import type { Profile } from "@/lib/types";
 
 export function Composer({ profile }: { profile: Profile | null }) {
   return (
-    <form action={createPost} className="border-b border-neutral-200 bg-white p-4">
+    <form
+      action={createPost}
+      className="border-b border-neutral-200 bg-white p-4 dark:border-neutral-800 dark:bg-black"
+    >
       <div className="flex gap-3">
         <Avatar name={profile?.display_name || "You"} src={profile?.avatar_url} />
 
@@ -14,13 +17,15 @@ export function Composer({ profile }: { profile: Profile | null }) {
             rows={3}
             maxLength={500}
             placeholder="What's new?"
-            className="w-full resize-none bg-transparent text-[15px] leading-6 text-neutral-950 placeholder:text-neutral-400 outline-none"
+            className="w-full resize-none bg-transparent text-[15px] leading-6 text-neutral-950 placeholder:text-neutral-400 outline-none dark:text-white dark:placeholder:text-neutral-500"
           />
 
           <div className="mt-3 flex items-center justify-between">
-            <p className="text-sm text-neutral-400">Anyone can reply</p>
+            <p className="text-sm text-neutral-400 dark:text-neutral-500">
+              Anyone can reply
+            </p>
 
-            <button className="rounded-full bg-neutral-950 px-5 py-2 text-sm font-bold text-white transition hover:bg-neutral-700">
+            <button className="rounded-full bg-neutral-950 px-5 py-2 text-sm font-bold text-white transition hover:bg-neutral-700 dark:bg-white dark:text-black dark:hover:bg-neutral-200">
               Post
             </button>
           </div>

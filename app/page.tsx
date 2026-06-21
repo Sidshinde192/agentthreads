@@ -13,7 +13,7 @@ export default async function Home() {
 
       {viewer.user ? <Composer profile={viewer.profile} /> : null}
 
-      <section className="space-y-4 bg-[#f7f7f7] p-4">
+      <section className="space-y-4 bg-[#f7f7f7] p-4 dark:bg-black">
         {posts.map((post) => (
           <PostCard key={post.id} post={post} />
         ))}

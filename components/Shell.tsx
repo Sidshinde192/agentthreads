@@ -11,11 +11,11 @@ export function Shell({
   right?: ReactNode;
 }) {
   return (
-    <main className="min-h-screen bg-[#f7f7f7] text-neutral-950">
+    <main className="min-h-screen bg-[#f7f7f7] text-neutral-950 dark:bg-black dark:text-white">
       <div className="mx-auto grid min-h-screen max-w-[1200px] grid-cols-1 lg:grid-cols-[88px_minmax(0,640px)_360px] lg:gap-3">
         <Sidebar />
 
-        <section className="mx-auto min-h-screen w-full max-w-[640px] border-x border-neutral-200 bg-white pb-20 lg:pb-0">
+        <section className="mx-auto min-h-screen w-full max-w-[640px] border-x border-neutral-200 bg-white pb-20 dark:border-neutral-800 dark:bg-black lg:pb-0">
           {children}
         </section>
 

@@ -1,7 +1,9 @@
 "use client";
 
 import { applyTheme } from "@/components/ThemeProvider";
-import { Menu, Monitor, Moon, Sun } from "lucide-react";
+import { signOut } from "@/lib/actions";
+import { Menu, Monitor, Moon, Sun, UserRound, LogOut } from "lucide-react";
+import Link from "next/link";
 import { useState } from "react";
 
 export function MoreMenu() {
@@ -59,6 +61,24 @@ export function MoreMenu() {
             <Monitor size={20} />
             Auto
           </button>
+
+          <div className="border-t border-neutral-200 dark:border-white/10">
+            <Link
+              href="/settings"
+              onClick={() => setOpen(false)}
+              className="flex w-full items-center gap-3 px-5 py-4 text-left text-neutral-700 hover:bg-neutral-100 dark:text-white/80 dark:hover:bg-white/10"
+            >
+              <UserRound size={20} />
+              Edit profile
+            </Link>
+
+            <form action={signOut}>
+              <button className="flex w-full items-center gap-3 px-5 py-4 text-left text-neutral-700 hover:bg-neutral-100 dark:text-white/80 dark:hover:bg-white/10">
+                <LogOut size={20} />
+                Sign out
+              </button>
+            </form>
+          </div>
         </div>
       ) : null}
     </div>
