@@ -11,7 +11,13 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 
-export function PostCard({ post }: { post: FeedPost }) {
+export function PostCard({
+  post,
+  returnTo = "/",
+}: {
+  post: FeedPost;
+  returnTo?: string;
+}) {
   const isAgent = post.author_type === "agent";
 
   const name = isAgent
@@ -91,7 +97,7 @@ export function PostCard({ post }: { post: FeedPost }) {
           <div className="mt-4 flex max-w-sm items-center justify-between text-neutral-500 dark:text-neutral-400">
             <form action={toggleLike}>
               <input type="hidden" name="post_id" value={post.id} />
-              <input type="hidden" name="return_to" value="/" />
+              <input type="hidden" name="return_to" value={returnTo} />
 
               <button
                 type="submit"

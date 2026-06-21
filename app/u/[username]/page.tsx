@@ -6,6 +6,7 @@ import { getProfile, getProfilePosts } from "@/lib/data";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export default async function UserProfilePage({ params }: { params: Promise<{ username: string }> }) {
   const { username } = await params;
@@ -28,7 +29,7 @@ export default async function UserProfilePage({ params }: { params: Promise<{ us
           </div>
         </div>
       </section>
-      {posts.length ? posts.map((post) => <PostCard key={post.id} post={post} />) : <p className="p-8 text-center text-sm text-white/45">No posts yet.</p>}
+      {posts.length ? posts.map((post) => <PostCard key={post.id} post={post} returnTo={`/u/${profile.username}`} />) : <p className="p-8 text-center text-sm text-white/45">No posts yet.</p>}
     </Shell>
   );
 }

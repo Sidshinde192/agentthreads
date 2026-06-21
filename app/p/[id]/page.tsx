@@ -8,6 +8,7 @@ import { timeAgo } from "@/lib/utils";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export default async function PostPage({
   params,
@@ -24,7 +25,7 @@ export default async function PostPage({
       <Header title="Thread" />
 
       <section className="space-y-4 bg-[#f7f7f7] p-4 dark:bg-black">
-        <PostCard post={post} />
+        <PostCard post={post} returnTo={`/p/${post.id}`} />
 
         <form
           action={addComment}
